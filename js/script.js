@@ -109,13 +109,7 @@ const myApp = createApp({
       };
 
       axios.post(url, data, config).then((res) => {
-        console.log(res.data);
-      });
-      this.currentMessages.push({
-        id: new Date().getTime(),
-        status: 'sent',
-        message: this.textMessage,
-        date: new Date().toLocaleString(),
+        this.currentMessages.push(res.data);
       });
       this.textMessage = '';
 

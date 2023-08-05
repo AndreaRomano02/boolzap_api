@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="Andrea Romano" />
+    <meta name="description" content="..." />
+    <!-- Fontawesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <!-- Bootstrap link -->
+    <link rel="stylesheet" href="	https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" />
+    <!-- MY style -->
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- Axios -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"
+      integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ=="
+      crossorigin="anonymous"
+    ></script>
+    <!-- VUE JS -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- JavaScript link -->
+    <script defer src="js/script.js"></script>
+    <title>Boolzapp</title>
+  </head>
+
+  <body>
+    <div id="root" class="wrap">
+      <!-- MAIN LAYOUT -->
+      <div id="main-layout" v-if="contacts.length">
+        <!-- ASIDE -->
+        <aside>
+          <!-- USER -->
+          <header class="aside-header">
+            <div class="user d-flex align-items-center">
+              <img class="user-img" :src="renderPicture(user)" :alt="user.name" />
+              <h5 class="user-name m-0">{{user.name}}</h5>
+            </div>
+            <div class="user-icon">
+              <a href="#"><i class="fa-solid fa-circle-notch"></i></a>
+              <a href="#"><i class="fa-solid fa-message"></i></a>
+              <a href="#"><i class="fa-solid fa-ellipsis-vertical"></i></a>
+            </div>
+          </header>
+
+          <!-- NOTIFICATION -->
+          <div class="notification" v-show="deleteNotification">
+            <a href="#" id="bell-notification"><i class="fa-solid fa-bell-slash"></i></a>
+            <div class="ms-3 text-notification">
+              <h5 class="m-0">Ricevi notifiche dei nuovi messaggi</h5>
+              <a href="#" @click="deleteNotification = false">Attiva notifiche desktop</a>
+            </div>
+          </div>
+
+          <!-- SEARCH BAR -->
+          <div class="search-bar p-3">
+            <div class="input-group">
+              <label class="input-group-text" for="filter-input">
+                <a href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="filter-input"
+                placeholder="Cerca o inizia una nuova chat"
+                v-model="filterText"
+              />
+            </div>
+          </div>
+
+          <!-- CONTACTS -->
+          <ul class="contacts list-unstyled m-0">
+            <li v-for="contact in filterContacts" class="preview-chat" @click="setCurrentId(contact)">
+              <img class="me-3" :src="renderPicture(contact)" :alt="contact.name" />
+              <div class="description flex-grow-1">
+                <h5>{{contact.name}}</h5>
+                <p>{{contact.messages[contact.messages.length - 1].message}}</p>
+              </div>
+              <div class="date flex-shrink-0">{{contact.messages[contact.messages.length - 1].date}}</div>
+            </li>
+          </ul>
+        </aside>
+
+        <!-- MAIN -->
+        <main>
+          <!-- CURRENT CHAT USER -->
+
+          <!-- Header -->
+          <header class="chat-header">
+            <div class="user d-flex align-items-center">
+              <img class="user-img" :src="renderContactPicture" :alt="renderContactName" />
+              <div class="user-info">
+                <h5 class="user-name m-0">{{renderContactName}}</h5>
+                <div class="last-access">
+                  Ultimo accesso il {{currentContact.messages[currentContact.messages.length - 1].date}}
+                </div>
+              </div>
+            </div>
+            <div class="user-icon">
+              <a href="#">
+                <i class="fa-solid fa-magnifying-glass" @click="showBar = ! showBar"></i>
+
+                <!-- SEARCH BAR CHAT -->
+                <div v-show="showBar" class="search-bar">
+                  <div class="input-group">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="filter-input-glass"
+                      placeholder="Cerca..."
+                      v-model="filterMessage"
+                    />
+                  </div>
+                </div>
+              </a>
+              <a href="#"><i class="fa-solid fa-paperclip"></i></a>
+              <a href="#"><i class="fa-solid fa-ellipsis-vertical"></i></a>
+            </div>
+          </header>
+
+          <!-- Messages -->
+          <section class="chat-content p-4">
+            <ul class="list-unstyled m-0">
+              <li v-for="{message, date, status, id} in filterMessages" :class="status">
+                <span class="message">
+                  <p class="text-message">{{message}}</p>
+                  <div class="time">{{date}}</div>
+                  <div class="banner">
+                    <a href="#" class="banner-arrow" @click="setCurrentMessageId(id),toggleBanner(id)">
+                      <i class="fa-solid fa-chevron-down"></i>
+                    </a>
+                    <div class="actions" v-show="(toggle && id === currentMessageId)">
+                      <button>Info Utili</button>
+                      <button @click="deleteMessage(id)">Elimina messaggio</button>
+                    </div>
+                  </div>
+                </span>
+              </li>
+            </ul>
+          </section>
+
+          <!-- Text Area Message -->
+          <section class="input-area">
+            <!--# EMOJY -->
+            <a href="#" class="emojy"><i class="fa-regular fa-face-smile"></i></a>
+
+            <!--# TEXT -->
+            <input
+              type="text"
+              class="input-message"
+              placeholder="Scrivi un messaggio"
+              v-model.trim="textMessage"
+              @keyup.enter="sendMessage()"
+            />
+
+            <!--# VOCAL AUDIO -->
+            <a @click="startRecognition" href="#" class="vocal"><i class="fa-solid fa-microphone"></i></a>
+          </section>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>

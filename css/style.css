@@ -1,0 +1,300 @@
+:root {
+  --bg-top: rgba(0, 150, 136, 1);
+  --bg-bottom: rgba(220, 219, 210, 1);
+  --bg-search-bar: #fafafa;
+  --bg-notification: #8edafc;
+  --bg-header: #eaeaea;
+  --send-chat-color: #d5f9ba;
+}
+
+/*# General */
+a {
+  color: currentColor;
+  text-decoration: none;
+}
+
+a:hover {
+  color: currentColor;
+}
+
+/** Body */
+body {
+  height: 100vh;
+  background: rgb(0, 150, 136);
+  background: linear-gradient(var(--bg-top) 15%, var(--bg-bottom) 15%);
+}
+
+.wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+#main-layout {
+  height: 95vh;
+  width: 80vw;
+  background-color: white;
+
+  display: flex;
+}
+
+/** General img */
+img {
+  height: 80px;
+  max-width: 100%;
+  border-radius: 50%;
+  display: block;
+
+  margin-right: 10px;
+}
+
+/** General Header */
+header {
+  height: 90px;
+  padding: 1rem;
+
+  background-color: var(--bg-header);
+
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+header .user {
+  flex-basis: 75%;
+}
+
+header .user-icon {
+  color: #c5bbb6;
+  padding-right: 10px;
+
+  flex: 1 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+}
+
+.user-icon a {
+  font-size: 30px;
+}
+
+/*# Contatti */
+aside {
+  flex: 0 0 535px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/** Header Contacts */
+
+/*? User Image */
+img.user-img {
+  height: 60px;
+}
+
+/** Notification */
+.notification {
+  flex-basis: 100px;
+  background-color: var(--bg-notification);
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+
+  padding-left: 40px;
+}
+
+#bell-notification {
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  width: 60px;
+  background-color: white;
+  border-radius: 50%;
+}
+
+#bell-notification i {
+  color: var(--bg-notification);
+}
+
+.text-notification a {
+  text-decoration: underline;
+  color: rgb(50, 50, 50);
+}
+/** Search Bar */
+.search-bar {
+  flex-basis: 60px;
+  flex-shrink: 0;
+
+  background-color: var(--bg-search-bar);
+}
+
+.search-bar .form-control {
+  border-left: none;
+}
+
+.search-bar .input-group-text {
+  background-color: white;
+  border-right: none;
+}
+
+/** Contacts */
+.contacts {
+  overflow: auto;
+  flex-grow: 1;
+
+  padding: 1rem;
+}
+
+.contacts .preview-chat {
+  display: flex;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.contacts .preview-chat:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.contacts .description p {
+  color: rgb(150, 150, 150);
+}
+
+.contacts .date {
+  font-size: 0.8rem;
+}
+
+/*# Main */
+main {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/** Header Main */
+.chat-header {
+  position: relative;
+}
+
+.user-icon .search-bar {
+  position: absolute;
+  width: 35%;
+  bottom: -35px;
+  right: 0%;
+  z-index: 1;
+}
+
+.user-icon .search-bar input {
+  padding: 1rem;
+}
+
+/** Chat Content */
+.chat-content {
+  flex-grow: 1;
+  overflow: auto;
+  background-image: url('../img/mine.jpg');
+}
+
+.chat-content .message {
+  min-width: 50px;
+  border-radius: 10px;
+  display: inline-block;
+  padding: 1rem;
+  padding-right: 40px;
+  position: relative;
+}
+
+.chat-content .message:hover .banner a {
+  display: block;
+}
+
+.chat-content li {
+  margin-bottom: 1rem;
+}
+
+.message .text-message {
+  margin: 0;
+}
+
+.message .time {
+  font-size: 12px;
+  text-align: end;
+  color: lightgray;
+  margin-top: 5px;
+}
+
+/*? Received message */
+.received > .message {
+  background-color: white;
+}
+
+/*? Send message */
+.chat-content .sent {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.sent > .message {
+  background-color: var(--send-chat-color);
+}
+
+/*? Banner */
+.banner .banner-arrow {
+  position: absolute;
+  right: 10px;
+  top: 15px;
+  display: none;
+}
+
+.banner .actions {
+  box-shadow: 3px 3px 5px gray;
+}
+
+.sent .banner .actions {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  bottom: -50px;
+}
+
+.received .banner .actions {
+  position: absolute;
+  z-index: 1;
+  right: -180px;
+  top: 45px;
+}
+
+.banner button {
+  border: none;
+  display: block;
+  width: 100%;
+  padding: 10px 40px;
+}
+
+/** Text Area Message */
+.input-area {
+  height: 90px;
+  flex-shrink: 0;
+  background-color: var(--bg-header);
+
+  display: flex;
+  align-items: center;
+}
+
+.input-area a {
+  font-size: 2rem;
+  color: #6b7376;
+  flex: 0 0 10%;
+  text-align: center;
+}
+
+.input-message {
+  flex-grow: 1;
+
+  height: 60px;
+  border: none;
+}

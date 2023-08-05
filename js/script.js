@@ -1,5 +1,6 @@
 //# Creo la pagina VEU
 const { createApp } = Vue;
+const url = 'http://localhost/vue-boolzapp/api/index.php';
 
 const myApp = createApp({
   name: 'Boolzap',
@@ -80,7 +81,7 @@ const myApp = createApp({
 
   methods: {
     fetchData() {
-      axios.get('http://localhost/vue-boolzapp/api/index.php').then((res) => {
+      axios.get(url).then((res) => {
         this.contacts = res.data;
         console.log(this.contacts); // Controlla i dati ricevuti nella console
       });
@@ -101,6 +102,15 @@ const myApp = createApp({
 
     //* Send a new message
     sendMessage() {
+      const data = { message: this.textMessage, id: this.currentId };
+
+      const config = {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      };
+
+      axios.post(url, data, config).then((res) => {
+        console.log(res.data);
+      });
       this.currentMessages.push({
         id: new Date().getTime(),
         status: 'sent',
